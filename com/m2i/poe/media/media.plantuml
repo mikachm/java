@@ -38,14 +38,31 @@ title __MEDIA's Class Diagram__\n
   package com.m2i.poe {
     package com.m2i.poe.media {
       class Cart {
-          - mediaList : List<Media>
+          - cartRowList : List<CartRow>
           + Cart()
           + getMediaList()
           + getTotalNetPrice()
+          - isMediaInCart()
           + addItem()
           + removeItem()
-          + setQuantityItem()
+          + affichePanier()
+      }
+    }
+  }
+  
+
+  package com.m2i.poe {
+    package com.m2i.poe.media {
+      class CartRow {
+          - quantity : int
+          + CartRow()
+          + CartRow()
+          + getNetPrice()
+          + increment()
+          + decrement()
           + getQuantity()
+          + getTitle()
+          + getMedia()
       }
     }
   }
@@ -124,9 +141,40 @@ title __MEDIA's Class Diagram__\n
 
   package com.m2i.poe {
     package com.m2i.poe.media {
-      class MediaCartRaw {
+      class MediaException {
+          + MediaException()
       }
     }
+  }
+  
+
+  abstract class PrintStreamOrWriter {
+      - PrintStreamOrWriter()
+      {abstract} ~ lock()
+      {abstract} ~ println()
+  }
+  
+
+  class SentinelHolder {
+      {static} + STACK_TRACE_ELEMENT_SENTINEL : StackTraceElement
+      {static} + STACK_TRACE_SENTINEL : StackTraceElement[]
+      - SentinelHolder()
+  }
+  
+
+  class WrappedPrintStream {
+      - printStream : PrintStream
+      ~ WrappedPrintStream()
+      ~ lock()
+      ~ println()
+  }
+  
+
+  class WrappedPrintWriter {
+      - printWriter : PrintWriter
+      ~ WrappedPrintWriter()
+      ~ lock()
+      ~ println()
   }
   
 
@@ -164,14 +212,15 @@ title __MEDIA's Class Diagram__\n
   
 
   Book -up-|> Media
+  CartRow o-- IMedia : media
   Cd -up-|> Media
   Dvd -up-|> Media
   Media -up-|> IMedia
-  Media "*" o-- "1" Publisher : publisher
-  Media "*" o-- "*" Author: authorList
-  Cart o--> "*" CartRow: cartRowList
-  CartRow o--> "*" Media : mediaList
-  MediaCartRaw -up-|> Media
+  Media o-- Publisher : publisher
+  MediaException +-down- PrintStreamOrWriter
+  MediaException +-down- SentinelHolder
+  MediaException +-down- WrappedPrintStream
+  MediaException +-down- WrappedPrintWriter
 
 
 right footer

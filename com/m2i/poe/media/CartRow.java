@@ -7,7 +7,7 @@ public class CartRow {
 
     public CartRow(){}
 
-    public CartRow(Media media){
+    public CartRow(IMedia media){
         this.media= media;
     }
 
@@ -16,14 +16,15 @@ public class CartRow {
         return media.getNetPrice()*quantity;
     }
 
-    public void increment(Media m){
+    public void increment(){
         quantity ++;
     }
-    public void decrement(Media m){
+    public void decrement() throws MediaException{
         if (quantity>1) {
             quantity--;
         }else{
-            System.out.println("Quantity error");
+            throw new MediaException("decrement <= 0");
+            //System.out.println("Quantity error");
         }
     }
 
@@ -35,4 +36,7 @@ public class CartRow {
         return media.getTitle();
     }
 
+    public IMedia getMedia() {
+        return media;
+    }
 }

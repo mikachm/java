@@ -20,3 +20,5 @@ public class Main {
         System.out.println(protein);
     }
 }
+//exemples d'exceptions:
+//impossible d'avoir une base Uracile dans l'ADN ou encore une base Thymine dans l'ARN

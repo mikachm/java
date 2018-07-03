@@ -42,17 +42,31 @@ public class Cart {
         public void addItem(IMedia media){
                 CartRow row = isMediaInCart(media);
                 if (row==null){
-                    row = new CartRow(media)
+                    row = new CartRow(media);
                 cartRowList.add(row);
                 }
     }
 
-        public void removeItem(IMedia m){
+        public void removeItem(IMedia m) throws MediaException{
             CartRow row = isMediaInCart(m);
-            if(row == nul){
-                System.out.println("quantity error");
+            if(row == null){
+                throw new MediaException("cart error");
+                //System.out.println("cart error");
             }else{
-                cartRowList.remove(m);
+                if(row.getQuantity()>1){
+                    row.decrement();
+                }else
+                    cartRowList.remove(row);
+                }
+            }
+
+            public void validate() throws MediaException{
+
+            if (getTotalNetPrice()<=0){
+                throw new MediaException("Prix négatif!!");
+            }else{
+                System.out.println("panier validé");
+
             }
         }
 
@@ -61,9 +75,10 @@ public class Cart {
         public void affichePanier(){
             System.out.println("Panier:");
             System.out.println("======");
-            for (CartRow cartRow:mediaRowList)
+            for (CartRow cartRow:cartRowList)
                   {
-                      System.out.println("titre: "+cartRow.getTitle()+" | quantité: "+cartRow.getQuantity());
+                      System.out.println("titre: "+cartRow.getTitle()+" | quantité: "
+                              +cartRow.getQuantity()+" | Prix: "+cartRow.getNetPrice());
             }
         }
 
